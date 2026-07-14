@@ -273,12 +273,14 @@
         document.getElementById('guestCount').innerText = count;
     }
 
-    function handleResponse() {
+  function handleResponse() {
         if (submitted) {
             if (isAttending) {
-                window.location.href = 'https://yispo.github.io/binyamin-barmitzva/thanksb.html';
+                // ניתוב יחסי בטוח לדף תודה-נגיע
+                window.location.href = 'thanksb.html'; 
             } else {
-                window.location.href = 'https://yispo.github.io/binyamin-barmitzva/thanks-no.html';
+                // ניתוב יחסי בטוח לדף תודה-לא נגיע
+                window.location.href = 'thanks-no.html'; 
             }
         }
     }
