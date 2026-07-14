@@ -1,44 +1,293 @@
-<!DOCTYPE html>
+# Let's inspect the colors of the image.
+# We'll use python to analyze the image bg.jpg, extract the dominant colors (specifically the dark-charcoal/bronze-gold theme) and design a high-quality CSS styling/background.
+# Then we will write a script to produce the updated html and present it clearly to the user.
+
+import cv2
+import numpy as np
+
+# We can also generate an SVG background that mimics the elegant mandala or patterns in the image.
+# Let's analyze the image's key colors:
+# Dark background: #262525 or #1a1a1a (looks like a dark charcoal textured paper, around RGB 42, 41, 39)
+# Gold accent: #cda250 or #b8860b (bronze-gold metallic outline)
+# Light concrete gray (left card background): #b3b1ad or #c2bfbb with concrete texture
+# Secondary text/accents: Dark purple/navy (#3c3741), rich red/brown details, charcoal gray.
+
+# Let's write the complete HTML file based on these colors, applying a stunning, highly polished premium design.
+# Background style: We can create a beautiful CSS background with a dark textured look, and a stunning golden SVG mandala centered behind the card, or within the card.
+# Let's build a beautiful mobile-responsive RSVP page.
+
+html_content = """<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>אישור הגעה - בנימין שמואל</title>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Arimo:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Arimo:wght@700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-    * { box-sizing: border-box; }
-    /* שינוי ה-body למרכוז מלא ומדויק ללא רווחים מיותרים */
+    * { 
+        box-sizing: border-box; 
+    }
+    
     body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f0f2f5; 
+        /* Dark luxury charcoal-textured background inspired by the card right-side */
+        background-color: #1e1d1c;
+        background-image: 
+            radial-gradient(circle at 50% 50%, rgba(40, 38, 36, 0.9) 0%, rgba(20, 19, 18, 0.98) 100%),
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23cda250' fill-opacity='0.03'%3E%3Cpath fill-rule='evenodd' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm1-61c3.16 0 6-1.84 6-5s-2.84-5-6-5-6 1.84-6 5 2.84 5 6 5zm-3 47c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm43-37c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         display: flex; 
         justify-content: center; 
         align-items: center; 
         min-height: 100dvh; 
         font-family: 'Assistant', sans-serif;
+        position: relative;
+        overflow-x: hidden;
     }
-    .watercolor-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?q=80&w=1000&auto=format&fit=cover'); background-size: cover; background-position: center; opacity: 0.3; z-index: 0; }
-    .form-card { position: relative; z-index: 10; background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 25px 15px; width: 95%; max-width: 480px; box-shadow: 0 15px 35px rgba(26, 42, 68, 0.15); text-align: center; }
-    h1 { font-family: 'Arimo', sans-serif; color: #1a2a44; font-size: 32px; margin: 0 0 5px 0; }
-    .subtitle { color: #d4af37; font-size: 18px; font-weight: 600; margin-bottom: 20px; }
-    .name-input, .note-input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 15px; font-size: 16px; text-align: center; font-family: inherit; }
-    .note-input { height: 80px; resize: none; text-align: right; }
-    .rsvp-toggle { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-    .toggle-btn { flex: 1; padding: 10px; border-radius: 12px; border: 2px solid #e2e8f0; background: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
-    .toggle-btn.active-yes { background-color: #1a2a44; color: white; border-color: #1a2a44; }
-    .toggle-btn.active-no { background-color: #7f1d1d; color: white; border-color: #7f1d1d; }
-    .details-section { display: none; margin-bottom: 20px; }
-    .counter-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; }
-    .control-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #d4af37; background: white; color: #d4af37; cursor: pointer; font-size: 20px; font-weight: bold; }
-    .counter-value { font-size: 24px; font-weight: 700; color: #1a2a44; margin: 0 15px; }
-    .submit-btn { background: linear-gradient(135deg, #1a2a44 0%, #2e4d68 100%); color: white; border: none; padding: 12px; font-weight: 700; border-radius: 50px; cursor: pointer; width: 100%; display: none; margin-top: 10px; }
+
+    /* Decorative Mandala background elements */
+    .mandala-bg {
+        position: absolute;
+        width: 320px;
+        height: 320px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 A50 50 0 1 0 50 100 A50 50 0 1 0 50 0 Z' fill='none' stroke='%23cda250' stroke-width='0.15' stroke-dasharray='1 1'/%3E%3Cg fill='none' stroke='%23cda250' stroke-width='0.3' opacity='0.15'%3E%3Ccircle cx='50' cy='50' r='40'/%3E%3Ccircle cx='50' cy='50' r='30'/%3E%3Ccircle cx='50' cy='50' r='20'/%3E%3Cpath d='M50 10 L50 90 M10 50 L90 50 M21.7 21.7 L78.3 78.3 M21.7 78.3 L78.3 21.7'/%3E%3C/g%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 0.12;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .mandala-top-right {
+        top: -80px;
+        right: -80px;
+    }
+    .mandala-bottom-left {
+        bottom: -80px;
+        left: -80px;
+    }
+
+    .form-card { 
+        position: relative; 
+        z-index: 10; 
+        /* Light concrete textured background mimicking the left card in the image */
+        background: #e2e1dd;
+        background-image: 
+            radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%),
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0'/%3E%3Ccomposite operator='in' in2='SourceGraphic'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)'/%3E%3C/svg%3E");
+        border-radius: 12px; 
+        padding: 35px 25px; 
+        width: 90%; 
+        max-width: 440px; 
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.6), 
+            inset 0 0 0 1px rgba(255, 255, 255, 0.3); 
+        text-align: center; 
+        border: 1px solid #c5c3bf;
+    }
+
+    /* Elegant inner double border styling like Jewish/Chassidic invitations */
+    .form-card::after {
+        content: '';
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        border: 1px solid rgba(111, 107, 100, 0.3);
+        border-radius: 8px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .form-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Beautiful corner mandala ornamentation from the card */
+    .corner-ornament {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        opacity: 0.12;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .corner-bottom-left {
+        bottom: 15px;
+        left: 15px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M0 100 C 30 100, 100 30, 100 0' fill='none' stroke='%233c3741' stroke-width='2'/%3E%3Cpath d='M0 100 Q 50 100, 50 50 Q 100 50, 100 0' fill='none' stroke='%233c3741' stroke-width='1'/%3E%3Ccircle cx='20' cy='80' r='10' fill='none' stroke='%233c3741' stroke-width='1'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    h1 { 
+        font-family: 'Assistant', sans-serif; 
+        font-weight: 700;
+        color: #262524; 
+        font-size: 32px; 
+        margin: 0 0 8px 0; 
+        letter-spacing: 0.5px;
+    }
+    
+    .subtitle { 
+        color: #8c7853; /* Deep gold/bronze color */
+        font-size: 16px; 
+        font-weight: 600; 
+        margin-bottom: 25px; 
+        font-family: 'Amiri', serif;
+        font-style: italic;
+    }
+    
+    /* Elegant input fields resembling concrete/metallic card styling */
+    .name-input, .note-input { 
+        width: 100%; 
+        padding: 14px; 
+        border-radius: 8px; 
+        border: 1px solid #b6b3ae; 
+        background-color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 18px; 
+        font-size: 16px; 
+        text-align: center; 
+        font-family: inherit; 
+        color: #262524;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+    }
+    .name-input:focus, .note-input:focus {
+        outline: none;
+        border-color: #8c7853;
+        background-color: #ffffff;
+        box-shadow: 0 0 6px rgba(140, 120, 83, 0.2), inset 0 1px 3px rgba(0,0,0,0.06);
+    }
+    
+    .note-input { 
+        height: 90px; 
+        resize: none; 
+        text-align: right; 
+    }
+    
+    .rsvp-toggle { 
+        display: flex; 
+        justify-content: center; 
+        gap: 12px; 
+        margin-bottom: 22px; 
+    }
+    
+    .toggle-btn { 
+        flex: 1; 
+        padding: 14px 10px; 
+        border-radius: 8px; 
+        border: 1px solid #b6b3ae; 
+        background: rgba(255, 255, 255, 0.7); 
+        cursor: pointer; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        transition: all 0.3s ease;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 15px;
+        color: #55524d;
+    }
+    .toggle-btn i {
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+    .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: #8c7853;
+    }
+    
+    /* Toggle active classes customized to match the design */
+    .toggle-btn.active-yes { 
+        background-color: #2c2a29; /* Dark warm charcoal */
+        color: #d8b87c; /* Gold text */
+        border-color: #2c2a29; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .toggle-btn.active-no { 
+        background-color: #723434; /* Dark burgundy/brownish red */
+        color: #fdfaf6; 
+        border-color: #723434; 
+        box-shadow: 0 4px 12px rgba(114, 52, 52, 0.2);
+    }
+    
+    .details-section { 
+        display: none; 
+        margin-bottom: 22px; 
+        background: rgba(255, 255, 255, 0.4);
+        padding: 18px;
+        border-radius: 8px;
+        border: 1px solid rgba(182, 179, 174, 0.5);
+    }
+    
+    .counter-section { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        margin-bottom: 15px; 
+    }
+    
+    .control-btn { 
+        width: 38px; 
+        height: 38px; 
+        border-radius: 50%; 
+        border: 1.5px solid #8c7853; 
+        background: white; 
+        color: #8c7853; 
+        cursor: pointer; 
+        font-size: 18px; 
+        font-weight: bold; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+    .control-btn:hover {
+        background-color: #8c7853;
+        color: white;
+    }
+    
+    .counter-value { 
+        font-size: 24px; 
+        font-weight: 700; 
+        color: #262524; 
+        margin: 0 20px; 
+        min-width: 24px;
+        display: inline-block;
+    }
+    
+    /* Luxury gold/metallic styling for submit button */
+    .submit-btn { 
+        background: linear-gradient(135deg, #2c2a29 0%, #1e1d1c 100%); 
+        color: #d8b87c; 
+        border: 1px solid #8c7853; 
+        padding: 14px; 
+        font-weight: 700; 
+        font-size: 17px;
+        letter-spacing: 0.5px;
+        border-radius: 8px; 
+        cursor: pointer; 
+        width: 100%; 
+        display: none; 
+        margin-top: 15px; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+    .submit-btn:hover {
+        background: linear-gradient(135deg, #3d3b39 0%, #2c2a29 100%);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+        transform: translateY(-1px);
+    }
 </style>
 </head>
 <body>
 
-<div class="watercolor-bg"></div>
+<div class="mandala-bg mandala-top-right"></div>
+<div class="mandala-bg mandala-bottom-left"></div>
 
 <form id="realRsvpForm"
       action="https://docs.google.com/forms/d/e/1FAIpQLSf__RAqcS81CkBbmSEH6TqslCMG3OxURhXNhUbhwfhYPHo-aQ/formResponse"
@@ -50,32 +299,37 @@
     <input type="hidden" name="entry.1580638204" id="gNotes">
 
     <div class="form-card">
-        <h1>אישור הגעה</h1>
-        <div class="subtitle">נשמח לראותכם בין אורחינו בבר המצווה</div>
-        <input type="text" id="guestName" class="name-input" placeholder="שם מלא" required>
+        <div class="corner-ornament corner-bottom-left"></div>
+        
+        <div class="form-content">
+            <h1>אישור הגעה</h1>
+            <div class="subtitle">נשמח לראותכם בין אורחינו בבר המצווה</div>
+            
+            <input type="text" id="guestName" class="name-input" placeholder="שם מלא" required autocomplete="off">
 
-        <div class="rsvp-toggle">
-            <button type="button" class="toggle-btn" id="btnYes" onclick="toggleSelection('yes')">
-                <i class="fa-solid fa-check"></i> <span>נגיע!</span>
-            </button>
-            <button type="button" class="toggle-btn" id="btnNo" onclick="toggleSelection('no')">
-                <i class="fa-solid fa-xmark"></i> <span>לא נגיע</span>
-            </button>
-        </div>
-
-        <div id="detailsSection" class="details-section">
-            <div class="counter-section">
-                <span style="margin-bottom: 10px; font-weight: bold;">כמה אתם?</span>
-                <div style="display: flex; align-items: center;">
-                    <button type="button" class="control-btn" onclick="updateCount(-1)">-</button>
-                    <span class="counter-value" id="guestCount">1</span>
-                    <button type="button" class="control-btn" onclick="updateCount(1)">+</button>
-                </div>
+            <div class="rsvp-toggle">
+                <button type="button" class="toggle-btn" id="btnYes" onclick="toggleSelection('yes')">
+                    <i class="fa-solid fa-check"></i> <span>נגיע!</span>
+                </button>
+                <button type="button" class="toggle-btn" id="btnNo" onclick="toggleSelection('no')">
+                    <i class="fa-solid fa-xmark"></i> <span>לא נגיע</span>
+                </button>
             </div>
-            <textarea id="guestNotes" class="note-input" placeholder="הערות מיוחדות"></textarea>
-        </div>
 
-        <button type="submit" class="submit-btn" id="submitBtn">שמירה</button>
+            <div id="detailsSection" class="details-section">
+                <div class="counter-section">
+                    <span style="margin-bottom: 10px; font-weight: 600; color: #444;">כמה אתם?</span>
+                    <div style="display: flex; align-items: center;">
+                        <button type="button" class="control-btn" onclick="updateCount(-1)">-</button>
+                        <span class="counter-value" id="guestCount">1</span>
+                        <button type="button" class="control-btn" onclick="updateCount(1)">+</button>
+                    </div>
+                </div>
+                <textarea id="guestNotes" class="note-input" placeholder="הערות מיוחדות..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">שמירה</button>
+        </div>
     </div>
 </form>
 
@@ -117,4 +371,10 @@
 </script>
 
 </body>
-</html>
+</html>"""
+
+# Write to file
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("HTML generated successfully!")
