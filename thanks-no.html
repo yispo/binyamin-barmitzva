@@ -19,7 +19,7 @@
             justify-content: center; 
             align-items: center; 
             min-height: 100dvh; 
-            width: 100%;
+            width: 100vw;
             font-family: 'Assistant', sans-serif;
             overflow-x: hidden;
         }
@@ -87,10 +87,14 @@
             font-size: 16px; 
             line-height: 1.6; 
             margin: 10px 0 30px 0; 
+            padding: 0 10px;
         }
         
         .back-btn { 
-            display: inline-block; 
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             background: linear-gradient(135deg, #2c2a29 0%, #1e1d1c 100%); 
             color: #d8b87c; 
             border: 1px solid #8c7853; 
@@ -108,13 +112,19 @@
         
         .back-btn:hover {
             background: linear-gradient(135deg, #3d3b39 0%, #2c2a29 100%);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
 
         /* התאמות מיוחדות למסכים קטנים ומובייל (Responsive Rules) */
         @media (max-width: 480px) {
+            .form-wrapper {
+                padding: 10px;
+            }
+
             .form-card {
-                padding: 30px 20px; /* הקטנת הריווח הפנימי כדי למנוע צפיפות */
+                padding: 30px 20px;
+                border-radius: 12px;
             }
             
             .form-card::after {
@@ -122,10 +132,11 @@
                 bottom: 8px;
                 left: 8px;
                 right: 8px;
+                border-radius: 8px;
             }
 
             h1 {
-                font-size: 26px; /* הקטנת גודל כותרת במובייל */
+                font-size: 26px;
                 margin-bottom: 8px;
             }
 
@@ -137,10 +148,11 @@
             p {
                 font-size: 15px;
                 margin: 10px 0 25px 0;
+                padding: 0;
             }
 
             .back-btn {
-                padding: 12px 24px;
+                padding: 14px 24px;
                 font-size: 15px;
                 width: 100%; /* פריסה מלאה של הכפתור לנוחות לחיצה במובייל */
             }
@@ -156,12 +168,12 @@
             <div class="subtitle">נתגעגע אליכם!</div>
             
             <p>
-                מצטערים שלא תוכלו להשתתף בבר המצווה של בנימין שמואל.<br>
-                נשמח לחגוג יחד בשמחות הבאות!
+                מצטערים שלא תוכלו להשתתף בבר המצווה של בנימין שמואל. נשמח לחגוג יחד בשמחות הבאות!
             </p>
             
-    <a href="index.html" class="back-btn">
-    <i class="fa-solid fa-house" style="margin-left: 6px;"></i> חזרה לדף הבית
+            <!-- תגית ה-a תוקנה ונסגרה כראוי -->
+            <a href="index.html" class="back-btn">
+                <i class="fa-solid fa-house"></i> חזרה לדף הבית
             </a>
         </div>
     </div>
