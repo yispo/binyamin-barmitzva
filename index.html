@@ -14,52 +14,44 @@
     body { 
         margin: 0; 
         padding: 0; 
-        /* רקע פחם יוקרתי ונקי ללא טקסטורות בעייתיות */
-        background-color: #1e1d1c;
-        background-image: radial-gradient(circle at center, #2c2a29 0%, #121111 100%);
+        /* רקע חלק, נקי, ממורכז ויוקרתי בגוון פחם עמוק בהשראת ההזמנה ללא דוגמאות מבלבלות */
+        background: radial-gradient(circle at center, #2c2a29 0%, #171615 100%);
         display: flex; 
         justify-content: center; 
         align-items: center; 
         min-height: 100dvh; 
-        width: 100%;
+        width: 100vw;
         font-family: 'Assistant', sans-serif;
         overflow-x: hidden;
     }
 
-    /* מעטפת המבטיחה מרכוז מושלם בכל מכשיר ומונעת גלילה מיותרת */
-    .form-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        padding: 20px 15px;
-        z-index: 10;
-    }
-
     .form-card { 
         position: relative; 
-        background-color: #e2e1dd; /* צבע הכרטיס השמאלי מההזמנה */
+        z-index: 10; 
+        /* גוון נייר/בטון אלגנטי ויוקרתי בהשראת הכרטיס השמאלי */
+        background: #e2e1dd;
         border-radius: 16px; 
-        padding: 30px 20px; 
-        width: 100%; 
-        max-width: 420px; 
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); 
+        padding: 40px 25px; 
+        width: 90%; 
+        max-width: 440px; 
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); 
         text-align: center; 
         border: 1px solid #c5c3bf;
+        margin: auto;
     }
 
-    /* מסגרת זהב פנימית כפולה ואלגנטית */
+    /* מסגרת פנימית כפולה קלאסית מעודנת כמו בהזמנה */
     .form-card::after {
         content: '';
         position: absolute;
-        top: 10px;
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        border: 1px solid rgba(140, 120, 83, 0.25);
-        border-radius: 10px;
+        top: 12px;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        border: 1px solid rgba(111, 107, 100, 0.25);
+        border-radius: 12px;
         pointer-events: none;
-        z-index: 1;
+        z-index: 0;
     }
 
     .form-content {
@@ -71,38 +63,39 @@
         font-family: 'Assistant', sans-serif; 
         font-weight: 700;
         color: #262524; 
-        font-size: 28px; 
+        font-size: 32px; 
         margin: 0 0 8px 0; 
     }
     
     .subtitle { 
-        color: #8c7853; /* זהב/ברונזה עמוק מההזמנה */
+        color: #8c7853; /* צבע זהב/ברונזה יוקרתי תואם להזמנה */
         font-size: 16px; 
         font-weight: 600; 
-        margin-bottom: 25px; 
+        margin-bottom: 30px; 
         font-family: 'Amiri', serif;
     }
     
     .name-input, .note-input { 
         width: 100%; 
-        padding: 12px; 
+        padding: 14px; 
         border-radius: 8px; 
-        border: 1px solid #cbd5e1; 
+        border: 1px solid #b6b3ae; 
         background-color: #ffffff;
-        margin-bottom: 15px; 
+        margin-bottom: 18px; 
         font-size: 16px; 
         text-align: center; 
         font-family: inherit; 
         color: #262524;
+        transition: all 0.3s ease;
     }
     .name-input:focus, .note-input:focus {
         outline: none;
         border-color: #8c7853;
-        box-shadow: 0 0 5px rgba(140, 120, 83, 0.3);
+        box-shadow: 0 0 6px rgba(140, 120, 83, 0.2);
     }
     
     .note-input { 
-        height: 80px; 
+        height: 90px; 
         resize: none; 
         text-align: right; 
     }
@@ -110,46 +103,54 @@
     .rsvp-toggle { 
         display: flex; 
         justify-content: center; 
-        gap: 10px; 
-        margin-bottom: 20px; 
+        gap: 12px; 
+        margin-bottom: 22px; 
     }
     
     .toggle-btn { 
         flex: 1; 
-        padding: 12px 10px; 
+        padding: 14px 10px; 
         border-radius: 8px; 
-        border: 1px solid #cbd5e1; 
-        background: white; 
+        border: 1px solid #b6b3ae; 
+        background: rgba(255, 255, 255, 0.8); 
         cursor: pointer; 
         display: flex; 
         flex-direction: column; 
         align-items: center; 
+        transition: all 0.3s ease;
         font-family: inherit;
         font-weight: 600;
         font-size: 15px;
         color: #55524d;
-        transition: all 0.2s ease;
     }
     .toggle-btn i {
-        font-size: 16px;
-        margin-bottom: 4px;
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+    .toggle-btn:hover {
+        background: #ffffff;
+        border-color: #8c7853;
     }
     
-    /* עיצוב כפתורים פעילים על בסיס צבעי ההזמנה */
+    /* עיצוב כפתורים פעילים על בסיס פלטת ההזמנה */
     .toggle-btn.active-yes { 
-        background-color: #2c2a29; /* פחם כהה */
-        color: #d8b87c; /* טקסט מוזהב */
+        background-color: #2c2a29; /* צבע הפחם הכהה מההזמנה */
+        color: #d8b87c; /* טקסט זהב מהודר */
         border-color: #2c2a29; 
     }
     .toggle-btn.active-no { 
-        background-color: #723434; /* בורדו-חום אלגנטי */
-        color: #ffffff; 
+        background-color: #723434; /* גוון היין/בורדו מהעיטור */
+        color: #fdfaf6; 
         border-color: #723434; 
     }
     
     .details-section { 
         display: none; 
-        margin-bottom: 20px; 
+        margin-bottom: 22px; 
+        background: rgba(255, 255, 255, 0.5);
+        padding: 18px;
+        border-radius: 8px;
+        border: 1px solid rgba(182, 179, 174, 0.4);
     }
     
     .counter-section { 
@@ -160,8 +161,8 @@
     }
     
     .control-btn { 
-        width: 36px; 
-        height: 36px; 
+        width: 38px; 
+        height: 38px; 
         border-radius: 50%; 
         border: 1.5px solid #8c7853; 
         background: white; 
@@ -172,76 +173,85 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: all 0.2s ease;
+    }
+    .control-btn:hover {
+        background-color: #8c7853;
+        color: white;
     }
     
     .counter-value { 
-        font-size: 22px; 
+        font-size: 24px; 
         font-weight: 700; 
         color: #262524; 
-        margin: 0 15px; 
+        margin: 0 20px; 
+        min-width: 24px;
+        display: inline-block;
     }
     
     .submit-btn { 
         background: linear-gradient(135deg, #2c2a29 0%, #1e1d1c 100%); 
         color: #d8b87c; 
         border: 1px solid #8c7853; 
-        padding: 12px; 
+        padding: 14px; 
         font-weight: 700; 
-        font-size: 16px;
-        border-radius: 50px; 
+        font-size: 17px;
+        border-radius: 8px; 
         cursor: pointer; 
         width: 100%; 
         display: none; 
-        margin-top: 10px; 
-        box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+        margin-top: 15px; 
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+    .submit-btn:hover {
+        background: linear-gradient(135deg, #3d3b39 0%, #2c2a29 100%);
     }
 </style>
 </head>
 <body>
 
-<div class="form-wrapper">
-    <form id="realRsvpForm"
-          action="https://docs.google.com/forms/d/e/1FAIpQLSf__RAqcS81CkBbmSEH6TqslCMG3OxURhXNhUbhwfhYPHo-aQ/formResponse"
-          method="POST"
-          target="hidden_iframe"
-          onsubmit="submitted=true;">
-        <input type="hidden" name="entry.1433589886" id="gName">
-        <input type="hidden" name="entry.1597149823" id="gGuests">
-        <input type="hidden" name="entry.1580638204" id="gNotes">
+<form id="realRsvpForm"
+      action="https://docs.google.com/forms/d/e/1FAIpQLSf__RAqcS81CkBbmSEH6TqslCMG3OxURhXNhUbhwfhYPHo-aQ/formResponse"
+      method="POST"
+      target="hidden_iframe"
+      onsubmit="submitted=true;">
+    <input type="hidden" name="entry.1433589886" id="gName">
+    <input type="hidden" name="entry.1597149823" id="gGuests">
+    <input type="hidden" name="entry.1580638204" id="gNotes">
 
-        <div class="form-card">
-            <div class="form-content">
-                <h1>אישור הגעה</h1>
-                <div class="subtitle">נשמח לראותכם בין אורחינו בבר המצווה</div>
-                
-                <input type="text" id="guestName" class="name-input" placeholder="שם מלא" required autocomplete="off">
+    <div class="form-card">
+        <div class="form-content">
+            <h1>אישור הגעה</h1>
+            <div class="subtitle">נשמח לראותכם בין אורחינו בבר המצווה</div>
+            
+            <input type="text" id="guestName" class="name-input" placeholder="שם מלא" required autocomplete="off">
 
-                <div class="rsvp-toggle">
-                    <button type="button" class="toggle-btn" id="btnYes" onclick="toggleSelection('yes')">
-                        <i class="fa-solid fa-check"></i> <span>נגיע!</span>
-                    </button>
-                    <button type="button" class="toggle-btn" id="btnNo" onclick="toggleSelection('no')">
-                        <i class="fa-solid fa-xmark"></i> <span>לא נגיע</span>
-                    </button>
-                </div>
-
-                <div id="detailsSection" class="details-section">
-                    <div class="counter-section">
-                        <span style="margin-bottom: 8px; font-weight: bold; color: #444;">כמה אתם?</span>
-                        <div style="display: flex; align-items: center;">
-                            <button type="button" class="control-btn" onclick="updateCount(-1)">-</button>
-                            <span class="counter-value" id="guestCount">1</span>
-                            <button type="button" class="control-btn" onclick="updateCount(1)">+</button>
-                        </div>
-                    </div>
-                    <textarea id="guestNotes" class="note-input" placeholder="הערות מיוחדות..."></textarea>
-                </div>
-
-                <button type="submit" class="submit-btn" id="submitBtn">שמירה</button>
+            <div class="rsvp-toggle">
+                <button type="button" class="toggle-btn" id="btnYes" onclick="toggleSelection('yes')">
+                    <i class="fa-solid fa-check"></i> <span>נגיע!</span>
+                </button>
+                <button type="button" class="toggle-btn" id="btnNo" onclick="toggleSelection('no')">
+                    <i class="fa-solid fa-xmark"></i> <span>לא נגיע</span>
+                </button>
             </div>
+
+            <div id="detailsSection" class="details-section">
+                <div class="counter-section">
+                    <span style="margin-bottom: 10px; font-weight: 600; color: #444;">כמה אתם?</span>
+                    <div style="display: flex; align-items: center;">
+                        <button type="button" class="control-btn" onclick="updateCount(-1)">-</button>
+                        <span class="counter-value" id="guestCount">1</span>
+                        <button type="button" class="control-btn" onclick="updateCount(1)">+</button>
+                    </div>
+                </div>
+                <textarea id="guestNotes" class="note-input" placeholder="הערות מיוחדות..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">שמירה</button>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleResponse()"></iframe>
 
