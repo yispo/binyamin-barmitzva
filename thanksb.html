@@ -14,13 +14,12 @@
         body { 
             margin: 0; 
             padding: 0; 
-            /* רקע פחם יוקרתי, נקי וממורכז ללא הפרעות רקע */
             background: radial-gradient(circle at center, #2c2a29 0%, #171615 100%);
             display: flex; 
             justify-content: center; 
             align-items: center; 
             min-height: 100dvh; 
-            width: 100%;
+            width: 100vw;
             font-family: 'Assistant', sans-serif;
             overflow-x: hidden;
         }
@@ -36,7 +35,6 @@
 
         .form-card { 
             position: relative; 
-            /* גוון נייר יוקרתי בהשראת ההזמנה */
             background: #e2e1dd;
             border-radius: 16px; 
             padding: 40px 30px; 
@@ -48,7 +46,6 @@
             transition: all 0.3s ease;
         }
 
-        /* מסגרת זהב/ברונזה פנימית כפולה קלאסית */
         .form-card::after {
             content: '';
             position: absolute;
@@ -100,7 +97,10 @@
         }
         
         .calendar-btn { 
-            display: inline-block; 
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             background: linear-gradient(135deg, #2c2a29 0%, #1e1d1c 100%); 
             color: #d8b87c !important; 
             border: 1px solid #8c7853; 
@@ -114,12 +114,13 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             font-family: inherit;
             margin-bottom: 30px;
-            white-space: nowrap;
+            width: auto;
         }
         
         .calendar-btn:hover {
             background: linear-gradient(135deg, #3d3b39 0%, #2c2a29 100%);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
 
         .signature {
@@ -131,18 +132,24 @@
             padding-top: 15px;
             display: inline-block;
             width: 80%;
+            margin-top: 15px;
         }
 
         .icon {
-            margin-top: 15px;
-            font-size: 20px;
+            font-size: 24px;
             color: #8c7853;
+            margin-bottom: 10px;
         }
 
-        /* חוקי רספונסיביות מיוחדים למובייל */
+        /* התאמה רספונסיבית מעולה למובייל ולמסכים קטנים */
         @media (max-width: 480px) {
+            .form-wrapper {
+                padding: 10px;
+            }
+
             .form-card {
-                padding: 30px 20px; /* צמצום ריווח פנימי */
+                padding: 30px 20px;
+                border-radius: 12px;
             }
             
             .form-card::after {
@@ -150,10 +157,11 @@
                 bottom: 8px;
                 left: 8px;
                 right: 8px;
+                border-radius: 8px;
             }
 
             h1 {
-                font-size: 26px; /* כותרת קומפקטית יותר */
+                font-size: 26px;
                 margin-bottom: 6px;
             }
 
@@ -168,14 +176,14 @@
             }
 
             .calendar-btn {
-                padding: 12px 24px;
-                font-size: 14px;
-                width: 100%; /* כפתור ברוחב מלא לנוחות לחיצה אופטימלית מהנייד */
-                white-space: normal;
+                padding: 14px 20px;
+                font-size: 15px;
+                width: 100%; /* כפתור רחב ונוח ללחיצה באגודל בנייד */
+                box-sizing: border-box;
             }
             
             .signature {
-                font-size: 18px;
+                font-size: 17px;
                 width: 90%;
             }
         }
@@ -188,6 +196,10 @@
         <div class="form-content">
             <div class="bsd">בס"ד</div>
             
+            <div class="icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
             <h1>תודה על העדכון</h1>
             <div class="subtitle">אישורכם התקבל בהצלחה!</div>
             
@@ -195,4 +207,16 @@
                 שמחים ומצפים לראותכם בחגיגת בר המצווה<br>של בנימין שמואל היקר
             </p>
             
-            <a href="
+            <!-- כפתור שמירה ביומן מתוקן במלואו -->
+            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=%D7%91%D7%A8+%D7%9E%D7%A6%D7%95%D7%95%D7%94+%D7%A9%D7%9C+%D7%91%D7%A0%D7%99%D7%9E%D7%99%D7%9F+%D7%A9%D7%9E%D7%95%D7%90%D7%9C+%D7%92%D7%A0%D7%A5&dates=20260809T190000/20260809T220000&details=%D7%90%D7%95%D7%9C%D7%9D%3A+%D7%9E%D7%A9%D7%9B%D7%9F+%D7%94%D7%9B%D7%99%D7%A0%D7%95%D7%A1%D7%99%D7%9D+%28%D7%97%D7%91%D7%A8%D7%95%D7%9F%29&location=%D7%A8%D7%91%D7%9F+%D7%99%D7%95%D7%97%D7%A0%D7%9F+%D7%91%D7%9F+%D7%96%D7%9B%D7%90%D7%99+79%2C+%D7%90%D7%9C%D7%A2%D7%93" target="_blank" class="calendar-btn">
+                <i class="fa-regular fa-calendar-plus"></i> שמירה ביומן גוגל
+            </a>
+            
+            <br>
+            <div class="signature">משפחת גנץ</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
