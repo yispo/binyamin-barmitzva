@@ -72,7 +72,7 @@
         font-family: 'Amiri', serif;
     }
     
-    .name-input, .note-input { 
+    .name-input { 
         width: 100%; 
         padding: 14px; 
         border-radius: 8px; 
@@ -85,16 +85,10 @@
         color: #262524;
         transition: all 0.3s ease;
     }
-    .name-input:focus, .note-input:focus {
+    .name-input:focus {
         outline: none;
         border-color: #8c7853;
         box-shadow: 0 0 6px rgba(140, 120, 83, 0.2);
-    }
-    
-    .note-input { 
-        height: 90px; 
-        resize: none; 
-        text-align: right; 
     }
     
     .rsvp-toggle { 
@@ -155,6 +149,9 @@
         align-items: center; 
         margin-bottom: 15px; 
     }
+    .counter-section:last-of-type {
+        margin-bottom: 0;
+    }
     
     .control-btn { 
         width: 38px; 
@@ -207,17 +204,15 @@
 </head>
 <body>
 
-<!-- ה-action עודכן לטופס החדש שלך -->
 <form id="realRsvpForm"
       action="https://docs.google.com/forms/d/e/1FAIpQLSfOlNsz-xP82CoC1A4nhylKidYvi_Kj1GFWL7uomFEpRJ04jQ/formResponse"
       method="POST"
       target="hidden_iframe"
       onsubmit="submitted=true;">
     
-    <!-- החליפי את המילים באותיות גדולות במספר ה-entry האמיתי של השדות בטופס החדש -->
-    <input type="hidden" name="entry.YOUR_NAME_ENTRY_ID" id="67580760">
-    <input type="hidden" name="entry.YOUR_GUESTS_ENTRY_ID" id="1970683618">
-    <input type="hidden" name="entry.YOUR_NOTES_ENTRY_ID" id="2077368596">
+    <input type="hidden" name="entry.67580760" id="gName">
+    <input type="hidden" name="entry.1970683618" id="gMen">
+    <input type="hidden" name="entry.2077368596" id="gWomen">
 
     <div class="form-card">
         <div class="form-content">
@@ -237,14 +232,22 @@
 
             <div id="detailsSection" class="details-section">
                 <div class="counter-section">
-                    <span style="margin-bottom: 10px; font-weight: 600; color: #444;">כמה אתם?</span>
+                    <span style="margin-bottom: 8px; font-weight: 600; color: #444;">כמה גברים?</span>
                     <div style="display: flex; align-items: center;">
-                        <button type="button" class="control-btn" onclick="updateCount(-1)">-</button>
-                        <span class="counter-value" id="guestCount">1</span>
-                        <button type="button" class="control-btn" onclick="updateCount(1)">+</button>
+                        <button type="button" class="control-btn" onclick="updateCount('men', -1)">-</button>
+                        <span class="counter-value" id="menCount">1</span>
+                        <button type="button" class="control-btn" onclick="updateCount('men', 1)">+</button>
                     </div>
                 </div>
-                <textarea id="guestNotes" class="note-input" placeholder="הערות מיוחדות..."></textarea>
+
+                <div class="counter-section">
+                    <span style="margin-bottom: 8px; font-weight: 600; color: #444;">כמה נשים?</span>
+                    <div style="display: flex; align-items: center;">
+                        <button type="button" class="control-btn" onclick="updateCount('women', -1)">-</button>
+                        <span class="counter-value" id="womenCount">0</span>
+                        <button type="button" class="control-btn" onclick="updateCount('women', 1)">+</button>
+                    </div>
+                </div>
             </div>
 
             <button type="submit" class="submit-btn" id="submitBtn">שמירה</button>
@@ -256,7 +259,8 @@
 
 <script>
     var submitted = false;
-    let count = 1;
+    let menCount = 1;
+    let womenCount = 0;
     let isAttending = null;
 
     function toggleSelection(type) {
@@ -267,9 +271,14 @@
         document.getElementById('submitBtn').style.display = 'block';
     }
 
-    function updateCount(val) {
-        count = Math.max(1, count + val);
-        document.getElementById('guestCount').innerText = count;
+    function updateCount(type, val) {
+        if (type === 'men') {
+            menCount = Math.max(0, menCount + val);
+            document.getElementById('menCount').innerText = menCount;
+        } else if (type === 'women') {
+            womenCount = Math.max(0, womenCount + val);
+            document.getElementById('womenCount').innerText = womenCount;
+        }
     }
 
     function handleResponse() {
@@ -284,8 +293,14 @@
 
     document.getElementById('realRsvpForm').addEventListener('submit', function(e) {
         document.getElementById('gName').value = document.getElementById('guestName').value;
-        document.getElementById('gGuests').value = isAttending ? count : 0;
-        document.getElementById('gNotes').value = document.getElementById('guestNotes').value;
+        
+        if (isAttending) {
+            document.getElementById('gMen').value = menCount;
+            document.getElementById('gWomen').value = womenCount;
+        } else {
+            document.getElementById('gMen').value = 0;
+            document.getElementById('gWomen').value = 0;
+        }
     });
 </script>
 
